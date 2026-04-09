@@ -1,0 +1,187 @@
+{
+  "project_name": "social_media_impact",
+  "architecture_pattern": "medallion",
+  "architecture_recommendation": {
+    "recommended_pattern": "medallion",
+    "confidence": "HIGH",
+    "scores": {
+      "medallion": 4,
+      "simple": 2,
+      "lambda": 0,
+      "kappa": 0
+    },
+    "reasons": [
+      "Small dataset (1,705 rows) \u2192 Simple ETL may be sufficient",
+      "5 numeric columns \u2192 aggregation in Gold layer adds value",
+      "PII detected in 1 column(s) \u2192 Silver masking layer required"
+    ],
+    "description": "Bronze (raw) \u2192 Silver (cleaned/conformed) \u2192 Gold (aggregated/business-ready)",
+    "best_for": "Analytics, BI dashboards, reporting, large datasets with complex transformations"
+  },
+  "pipeline_type": "batch",
+  "cloud": "local",
+  "load_strategy": "full",
+  "timestamp_column": null,
+  "layer_definitions": {
+    "bronze": {
+      "name": "bronze",
+      "purpose": "Raw data as-is from source \u2014 no transformations"
+    },
+    "silver": {
+      "name": "silver",
+      "purpose": "Cleaned, conformed, PII-masked, null-handled data"
+    },
+    "gold": {
+      "name": "gold",
+      "purpose": "Business-aggregated, analytics-ready data"
+    }
+  },
+  "stm": [
+    {
+      "source_column": "Student_ID",
+      "source_dtype": "int64",
+      "silver_column": "Student_ID",
+      "silver_transform": "pass_through",
+      "gold_column": "Student_ID",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Age",
+      "source_dtype": "int64",
+      "silver_column": "Age",
+      "silver_transform": "pass_through",
+      "gold_column": "Age",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Gender",
+      "source_dtype": "str",
+      "silver_column": "Gender",
+      "silver_transform": "SHA256_hash",
+      "gold_column": "Gender_masked",
+      "is_pii": true,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Academic_Level",
+      "source_dtype": "str",
+      "silver_column": "Academic_Level",
+      "silver_transform": "pass_through",
+      "gold_column": "Academic_Level",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Country",
+      "source_dtype": "str",
+      "silver_column": "Country",
+      "silver_transform": "pass_through",
+      "gold_column": "Country",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Avg_Daily_Usage_Hours",
+      "source_dtype": "float64",
+      "silver_column": "Avg_Daily_Usage_Hours",
+      "silver_transform": "pass_through",
+      "gold_column": "Avg_Daily_Usage_Hours",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Most_Used_Platform",
+      "source_dtype": "str",
+      "silver_column": "Most_Used_Platform",
+      "silver_transform": "pass_through",
+      "gold_column": "Most_Used_Platform",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Affects_Academic_Performance",
+      "source_dtype": "str",
+      "silver_column": "Affects_Academic_Performance",
+      "silver_transform": "pass_through",
+      "gold_column": "Affects_Academic_Performance",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Sleep_Hours_Per_Night",
+      "source_dtype": "float64",
+      "silver_column": "Sleep_Hours_Per_Night",
+      "silver_transform": "pass_through",
+      "gold_column": "Sleep_Hours_Per_Night",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Mental_Health_Score",
+      "source_dtype": "float64",
+      "silver_column": "Mental_Health_Score",
+      "silver_transform": "pass_through",
+      "gold_column": "Mental_Health_Score",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    },
+    {
+      "source_column": "Overall_Impact",
+      "source_dtype": "str",
+      "silver_column": "Overall_Impact",
+      "silver_transform": "pass_through",
+      "gold_column": "Overall_Impact",
+      "is_pii": false,
+      "is_key": false,
+      "null_pct": 0.0,
+      "scd_type": "n/a"
+    }
+  ],
+  "target_schema": {
+    "Student_ID": "int64",
+    "Age": "int64",
+    "Gender": "str",
+    "Academic_Level": "str",
+    "Country": "str",
+    "Avg_Daily_Usage_Hours": "float64",
+    "Most_Used_Platform": "str",
+    "Affects_Academic_Performance": "str",
+    "Sleep_Hours_Per_Night": "float64",
+    "Mental_Health_Score": "float64",
+    "Overall_Impact": "str"
+  },
+  "ddl_silver": "CREATE TABLE social_media_impact_silver (\n    Student_ID BIGINT NULL,\n    Age BIGINT NULL,\n    Gender VARCHAR(512) NULL,\n    Academic_Level VARCHAR(512) NULL,\n    Country VARCHAR(512) NULL,\n    Avg_Daily_Usage_Hours DOUBLE PRECISION NULL,\n    Most_Used_Platform VARCHAR(512) NULL,\n    Affects_Academic_Performance VARCHAR(512) NULL,\n    Sleep_Hours_Per_Night DOUBLE PRECISION NULL,\n    Mental_Health_Score DOUBLE PRECISION NULL,\n    Overall_Impact VARCHAR(512) NULL\n);",
+  "ddl_gold": "CREATE TABLE social_media_impact_gold (\n    Student_ID BIGINT NULL,\n    Age BIGINT NULL,\n    Gender_masked VARCHAR(512) NULL,\n    Academic_Level VARCHAR(512) NULL,\n    Country VARCHAR(512) NULL,\n    Avg_Daily_Usage_Hours DOUBLE PRECISION NULL,\n    Most_Used_Platform VARCHAR(512) NULL,\n    Affects_Academic_Performance VARCHAR(512) NULL,\n    Sleep_Hours_Per_Night DOUBLE PRECISION NULL,\n    Mental_Health_Score DOUBLE PRECISION NULL,\n    Overall_Impact VARCHAR(512) NULL,\n    _valid_from TIMESTAMP NOT NULL,\n    _valid_to TIMESTAMP,\n    _is_current BOOLEAN NOT NULL DEFAULT TRUE,\n    _change_hash VARCHAR(64),\n    _last_updated TIMESTAMP NOT NULL\n);",
+  "join_keys": [],
+  "scd_type": "1",
+  "pii_columns_to_mask": [
+    "Gender"
+  ],
+  "upstream_systems": "/home/node/.openclaw/media/inbound/Social_media_impact_on_life---cd880928-c901-4317-9c1c-eca7cdd5ef50.csv",
+  "downstream_consumers": "Not specified",
+  "columns_mapped": 11,
+  "duration_seconds": 0.0,
+  "status": "COMPLETE"
+}

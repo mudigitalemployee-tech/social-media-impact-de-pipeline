@@ -1,0 +1,12 @@
+source_column,source_dtype,silver_column,silver_transform,gold_column,is_pii,is_key,null_pct,scd_type
+Student_ID,int64,Student_ID,pass_through,Student_ID,False,False,0.0,n/a
+Age,int64,Age,pass_through,Age,False,False,0.0,n/a
+Gender,str,Gender,SHA256_hash,Gender_masked,True,False,0.0,n/a
+Academic_Level,str,Academic_Level,pass_through,Academic_Level,False,False,0.0,n/a
+Country,str,Country,pass_through,Country,False,False,0.0,n/a
+Avg_Daily_Usage_Hours,float64,Avg_Daily_Usage_Hours,pass_through,Avg_Daily_Usage_Hours,False,False,0.0,n/a
+Most_Used_Platform,str,Most_Used_Platform,pass_through,Most_Used_Platform,False,False,0.0,n/a
+Affects_Academic_Performance,str,Affects_Academic_Performance,pass_through,Affects_Academic_Performance,False,False,0.0,n/a
+Sleep_Hours_Per_Night,float64,Sleep_Hours_Per_Night,pass_through,Sleep_Hours_Per_Night,False,False,0.0,n/a
+Mental_Health_Score,float64,Mental_Health_Score,pass_through,Mental_Health_Score,False,False,0.0,n/a
+Overall_Impact,str,Overall_Impact,pass_through,Overall_Impact,False,False,0.0,n/a
