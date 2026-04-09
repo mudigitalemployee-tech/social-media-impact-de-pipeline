@@ -47,10 +47,11 @@ div.container-fluid.main-container { max-width:1200px; margin:0 auto; }
 }
 .toc-content h3::before { content:counter(h2counter) "." counter(h3counter) " "; font-weight:500; }
 h1.title { font-size:38px; color:#800000; margin-top:0; }
-.section.level2 { margin-top:20px; }
+.section.level2 { margin-top:28px; padding-bottom:18px; border-bottom:2px solid #e8edf3; }
 .section.level3 { margin-top:14px; }
 table { margin:14px auto; border-collapse:collapse; border:none; font-size:12px; color:#000; width:100%; }
-thead { border-bottom:1px solid #000; vertical-align:bottom; }
+thead { border-bottom:2px solid #1f4e79; vertical-align:bottom; background:#eaf2fb; }
+th { background:#eaf2fb; color:#1f4e79; font-weight:700; border-bottom:2px solid #1f4e79; }
 tr, th, td { text-align:left; vertical-align:middle; padding:0.5em 0.8em; border:none; }
 th { font-weight:bold; }
 tbody tr:nth-child(odd) { background:#f5f5f5; }
@@ -84,7 +85,7 @@ tbody tr:hover { background:rgba(66,165,245,0.15); }
   <div class="title-block">
     <div class="title-text">Social Media Impact</div>
     <div class="title-sub">Data Engineering Pipeline Report</div>
-    <div class="author-date"><b>Author:</b> Ved &nbsp;|&nbsp; <b>Version:</b> 26.04.02 &nbsp;|&nbsp; <b>Date:</b> April 09, 2026</div>
+    <div class="author-date"><b>Author:</b> Ved &nbsp;|&nbsp; <b>Version:</b> 26.04.03 &nbsp;|&nbsp; <b>Date:</b> April 09, 2026</div>
   </div>
   <div class="spacer"></div>
 </div>
@@ -126,7 +127,7 @@ No personally identifiable information columns were detected in this dataset. St
 <tr><td>Transform Steps</td><td>0</td></tr>
 <tr><td>PII Columns Masked</td><td>None detected</td></tr>
 <tr><td>Pipeline Duration</td><td>0.0s</td></tr>
-<tr><td>Run Timestamp</td><td>2026-04-09 09:06:26 UTC (2026-04-09 14:36:26 IST)</td></tr>
+<tr><td>Run Timestamp</td><td>2026-04-09 09:14:24 UTC (2026-04-09 14:44:24 IST)</td></tr>
 </tbody></table>
 </div>
 
@@ -339,6 +340,16 @@ This metadata block is written immutably to the pipeline execution log and retai
 <li><strong>Execution Sequence:</strong> Structural standardization → Quality filtering → Business rule application → PII masking : each step preconditioned on the prior step's output.</li>
 </ul>
 <p>No transformation steps recorded.</p>
+<div style="background:#eaf2fb;border-left:4px solid #1f4e79;border-radius:4px;padding:14px 18px;margin-top:20px;margin-bottom:4px">
+<p style="font-size:12px;font-weight:700;color:#1f4e79;margin:0 0 8px 0;letter-spacing:0.5px">KEY TAKEAWAYS : TRANSFORMATION LOG</p>
+<ul style="font-size:12px;color:#2c3e50;margin:0;padding-left:18px;line-height:1.9">
+<li>Every transformation step is logged atomically : Rows In vs Rows Out per step provides a precise audit trail for all data volume changes between Bronze and Silver layers.</li>
+<li>Steps are executed in a guaranteed sequence: structural standardization → deduplication → null handling → business rule application → PII masking. Each step preconditions the next.</li>
+<li>Any step where Rows Out is significantly lower than Rows In warrants business review : record removal may reflect expected filtering or an unintended data loss condition.</li>
+<li>This log satisfies GDPR Article 30 Records of Processing Activities requirements : retain alongside DQ scorecard and lineage documentation as the complete compliance package.</li>
+<li>For historical reprocessing, replay all steps in documented order against the Bronze raw layer : the transformation log is the complete reconstruction specification.</li>
+</ul>
+</div>
 </div>
 
 <!-- S6: Data Quality Scorecard -->
@@ -473,6 +484,16 @@ This table is the primary reference for the data engineering team's weekly DQ re
 <li><strong>Governance Artifact:</strong> Lineage documentation is retained for a minimum of 90 days alongside transformation logs and DQ scorecards as the complete pipeline audit package.</li>
 </ul>
 <p>Lineage data not available. Run all stages to generate.</p>
+<div style="background:#eaf2fb;border-left:4px solid #1f4e79;border-radius:4px;padding:14px 18px;margin-top:20px;margin-bottom:4px">
+<p style="font-size:12px;font-weight:700;color:#1f4e79;margin:0 0 8px 0;letter-spacing:0.5px">KEY TAKEAWAYS : DATA LINEAGE</p>
+<ul style="font-size:12px;color:#2c3e50;margin:0;padding-left:18px;line-height:1.9">
+<li>End-to-end provenance from source extraction through Bronze, Silver, and Gold is fully documented : every record transformation is traceable to a specific pipeline step.</li>
+<li>Lineage metadata enables precise upstream schema change impact analysis : data engineering teams can identify all affected pipelines, models, and dashboards before a source change is deployed.</li>
+<li>When a KPI anomaly is reported, lineage documentation reduces MTTR by providing the direct path from Gold metric back to the originating Bronze record : eliminating manual code inspection.</li>
+<li>This lineage record satisfies GDPR, CCPA, and SOX audit trail requirements for data processing documentation and financial data integrity verification.</li>
+<li>Retain lineage documentation for a minimum of 90 days alongside transformation logs and DQ scorecards as the complete pipeline governance audit package.</li>
+</ul>
+</div>
 </div>
 
 <!-- S8: Pipeline Orchestration -->
@@ -507,6 +528,16 @@ Each configuration parameter carries specific operational implications:
 <tr><td>Step Order</td><td>Extract data → Clean and transform → Run quality checks → Load to destination → Validate → Send notification</td></tr>
 </tbody></table>
 </div>
+<div style="background:#eaf2fb;border-left:4px solid #1f4e79;border-radius:4px;padding:14px 18px;margin-top:20px;margin-bottom:4px">
+<p style="font-size:12px;font-weight:700;color:#1f4e79;margin:0 0 8px 0;letter-spacing:0.5px">KEY TAKEAWAYS : PIPELINE ORCHESTRATION</p>
+<ul style="font-size:12px;color:#2c3e50;margin:0;padding-left:18px;line-height:1.9">
+<li>The DAG configuration enforces Max Active Runs = 1 : preventing concurrent pipeline executions that would produce duplicate or interleaved records in Silver and Gold layers.</li>
+<li>Retry policy (3 attempts, 5-minute delay) provides resilience against transient infrastructure failures without indefinitely blocking the next scheduled run cycle.</li>
+<li>SLA threshold monitoring ensures on-call engineers are alerted before downstream report delivery windows are breached : data consumers are protected from silent delays.</li>
+<li>The DQ quality gate halts pipeline execution on quality failure rather than silently writing bad data : protecting analytical consumers from corrupted KPIs.</li>
+<li>Monitor execution duration trends across runs as the primary leading indicator of source system performance degradation or data volume growth requiring infrastructure scaling.</li>
+</ul>
+</div>
 </div>
 
 <!-- S9: Business Insights and Recommendations -->
@@ -521,6 +552,17 @@ Each configuration parameter carries specific operational implications:
 </ul>
 <table><thead><tr><th>Priority</th><th>Observed Finding</th><th>Business Impact</th><th>Recommended Action</th><th>Expected Outcome</th></tr></thead>
 <tbody><tr><td><strong>P2</strong></td><td>DQ Score: 100% Target Met </td><td style="font-size:11px">All 0 DQ checks passed post-transform.</td><td style="font-size:11px">Continue monitoring DQ score across runs. Set up drift alerts.</td><td style="font-size:11px">Reliable, trusted data in Gold layer.</td></tr><tr><td><strong>P2</strong></td><td>Architecture: SIMPLE Fit Assessment</td><td style="font-size:11px">Simple ETL appropriate for current scale. Consider Medallion if volume or source count grows.</td><td style="font-size:11px">Review architecture quarterly as data volume and use cases grow.</td><td style="font-size:11px">Sustainable pipeline design aligned to business scale.</td></tr></tbody></table>
+<div style="background:#eaf2fb;border-left:4px solid #1f4e79;border-radius:4px;padding:14px 18px;margin-top:20px;margin-bottom:4px">
+<p style="font-size:12px;font-weight:700;color:#1f4e79;margin:0 0 8px 0;letter-spacing:0.5px">KEY TAKEAWAYS : BUSINESS INSIGHTS</p>
+<ul style="font-size:12px;color:#2c3e50;margin:0;padding-left:18px;line-height:1.9">
+<li><strong>P0 findings require same-day resolution</strong> : these represent active risks to analytical accuracy, regulatory compliance, or data consumer trust. Escalate immediately to Data Engineering lead.</li>
+<li><strong>P1 findings define the next sprint backlog</strong> : address within current iteration to prevent escalation. Unresolved P1s compound into P0s within 2–3 pipeline run cycles.</li>
+<li><strong>P2 findings inform quarterly health reviews</strong> : aggregate P2 trends across pipeline runs to identify systemic quality drift before it reaches threshold-breach severity.</li>
+<li><strong>Row retention rate</strong> is the single most actionable pipeline health metric for business stakeholders : a retention rate below 95% indicates that over 5% of source data did not meet Silver quality standards and warrants immediate upstream investigation.</li>
+<li><strong>DQ score trend over time</strong> is more informative than any single run score : a score declining by 2+ points per run signals a deteriorating source system that requires urgent data engineering attention.</li>
+<li><strong>Architecture fitness</strong> should be re-evaluated every 6 months : what is optimal for current data volume and complexity may not scale to production workloads without modification.</li>
+</ul>
+</div>
 </div>
 
 <!-- Footer -->
